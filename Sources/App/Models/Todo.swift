@@ -3,7 +3,7 @@ import Vapor
 
 /// A single entry of a todo list.
 final class Todo: SQLiteModel {
-    /// The unique identifier for this `Todo`.
+    /// The unique identifier for this `Todo`
     var id: Int?
 
     /// A title describing what this `Todo` entails.
