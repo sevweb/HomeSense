@@ -8,7 +8,11 @@
 import Vapor
 import FluentSQLite
 
-enum SensorType:Int, Codable {
+enum SensorType:Int,Codable, ReflectionDecodable, SQLiteType {
+    static func reflectDecoded() throws -> (SensorType, SensorType) {
+        return (.moisture, .humidity)
+    }
+    
     typealias Database = SQLiteDatabase
     case temperatur
     case humidity
@@ -16,13 +20,16 @@ enum SensorType:Int, Codable {
 }
 
 final class Sensor: SQLiteModel {
+    typealias Database = SQLiteDatabase
     var id: Int?
     var userID: User.ID
+    var roomID: Room.ID
     var type: SensorType
     
-    init(id:Int? = nil, userID:User.ID, type:SensorType = .moisture) {
+    init(id:Int? = nil, userID:User.ID, roomID:Room.ID, type:SensorType = .moisture) {
         self.id = id
         self.userID = userID
+        self.roomID = roomID
         self.type = type
     }
 }
@@ -32,13 +39,21 @@ extension Sensor {
         return parent(\.userID)
     }
 }
+extension Sensor {
+    var room: Parent<Sensor, Room> {
+        return parent(\.roomID)
+    }
+}
 
 extension Sensor: Migration {
     static func prepare(on conn: SQLiteConnection) -> Future<Void> {
         return SQLiteDatabase.create(Sensor.self, on: conn) { builder in
             builder.field(for: \.id, isIdentifier: true)
             builder.field(for: \.type)
+            builder.field(for: \.userID)
+            builder.field(for: \.roomID)
             builder.reference(from: \.userID, to: \User.id)
+            builder.reference(from: \.roomID, to: \Room.id)
         }
     }
 }

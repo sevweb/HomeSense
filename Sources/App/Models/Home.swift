@@ -34,6 +34,7 @@ extension Home: Migration {
             builder.field(for: \.id, isIdentifier: true)
             builder.field(for: \.name)
             builder.field(for: \.roomCount)
+            builder.field(for: \.userID)
             builder.reference(from: \.userID, to: \User.id)
         }
     }

@@ -12,12 +12,14 @@ final class Room: SQLiteModel {
     typealias Database = SQLiteDatabase
     var id: Int?
     var userID: User.ID
-    var roomName: String?
+    var homeID: Home.ID
+    var roomName: String
     
-    init(id: Int? = nil, userID:User.ID, roomName:String?){
+    init(id: Int? = nil, userID:User.ID, roomName:String, homeID:Home.ID){
         self.id = id
         self.userID = userID
         self.roomName = roomName
+        self.homeID = homeID
     }
 }
 extension Room {
@@ -25,13 +27,20 @@ extension Room {
         return parent(\.userID)
     }
 }
-
+extension Room {
+    var home: Parent<Room, Home> {
+        return parent(\.homeID)
+    }
+}
 extension Room: Migration {
     static func prepare(on conn: SQLiteConnection) -> Future<Void> {
         return SQLiteDatabase.create(Room.self, on: conn) { builder in
             builder.field(for: \.id, isIdentifier: true)
             builder.field(for: \.roomName)
+            builder.field(for: \.userID)
+            builder.field(for: \.homeID)
             builder.reference(from: \.userID, to: \User.id)
+            builder.reference(from: \.homeID, to: \Home.id)
         }
     }
 }

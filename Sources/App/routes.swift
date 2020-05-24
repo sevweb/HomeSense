@@ -17,4 +17,13 @@ public func routes(_ router: Router) throws {
     bearer.get("todos", use: todoController.index)
     bearer.post("todos", use: todoController.create)
     bearer.delete("todos", Todo.parameter, use: todoController.delete)
+    let homeController = HomeController()
+    bearer.get("homes", use: homeController.index)
+    bearer.post("homes", use: homeController.create)
+    let roomController = RoomController()
+    bearer.get("rooms", use: roomController.index)
+    bearer.post("rooms", use: roomController.create)
+    let sensorController = SensorController()
+    bearer.get("sensors", use: sensorController.index)
+    bearer.post("sensors", use: sensorController.create)
 }
