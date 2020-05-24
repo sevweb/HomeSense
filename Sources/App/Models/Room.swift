@@ -9,6 +9,7 @@ import Vapor
 import FluentSQLite
 
 final class Room: SQLiteModel {
+    typealias Database = SQLiteDatabase
     var id: Int?
     var userID: User.ID
     var roomName: String?
@@ -23,7 +24,7 @@ extension Room: Migration {
     static func prepare(on conn: SQLiteConnection) -> Future<Void> {
         return SQLiteDatabase.create(Room.self, on: conn) { builder in
             builder.field(for: \.id, isIdentifier: true)
-            builder.field(for: \.roomeName)
+            builder.field(for: \.roomName)
             builder.reference(from: \.userID, to: \User.id)
         }
     }

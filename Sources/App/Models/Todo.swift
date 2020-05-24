@@ -3,6 +3,7 @@ import Vapor
 
 /// A single entry of a todo list.
 final class Todo: SQLiteModel {
+    typealias Database = SQLiteDatabase
     /// The unique identifier for this `Todo`
     var id: Int?
 

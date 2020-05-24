@@ -8,21 +8,19 @@
 import Vapor
 import FluentSQLite
 
-
+enum SensorType:Int, Codable {
+    typealias Database = SQLiteDatabase
+    case temperatur
+    case humidity
+    case moisture
+}
 
 final class Sensor: SQLiteModel {
-    
-    enum SensorType {
-        case temperatur(Int)
-        case humidity(Int)
-        case moisture(Int)
-    }
-
     var id: Int?
     var userID: User.ID
     var type: SensorType
     
-    init(id:Int? = nil, userID:User.ID, type:SensorType = .moisture(0)) {
+    init(id:Int? = nil, userID:User.ID, type:SensorType = .moisture) {
         self.id = id
         self.userID = userID
         self.type = type

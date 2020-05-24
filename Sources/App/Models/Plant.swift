@@ -9,6 +9,7 @@ import Vapor
 import FluentSQLite
 
 final class Plant: SQLiteModel {
+    typealias Database = SQLiteDatabase
     var id: Int?
     var kind: String
     var roomID: Room.ID

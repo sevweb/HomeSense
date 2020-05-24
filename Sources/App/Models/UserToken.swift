@@ -5,6 +5,7 @@ import Vapor
 
 /// An ephermal authentication token that identifies a registered user.
 final class UserToken: SQLiteModel {
+    typealias Database = SQLiteDatabase
     /// Creates a new `UserToken` for a given user.
     static func create(userID: User.ID) throws -> UserToken {
         // generate a random 128-bit, base64-encoded string.

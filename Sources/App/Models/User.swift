@@ -4,6 +4,7 @@ import Vapor
 
 /// A registered user, capable of owning todo items.
 final class User: SQLiteModel {
+    typealias Database = SQLiteDatabase
     /// User's unique identifier.
     /// Can be `nil` if the user has not been saved yet.
     var id: Int?
