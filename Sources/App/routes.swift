@@ -25,5 +25,5 @@ public func routes(_ router: Router) throws {
     bearer.post("rooms", use: roomController.create)
     let sensorController = SensorController()
     bearer.get("sensors", use: sensorController.index)
-    bearer.post("sensors", use: sensorController.create)
+//    bearer.post("sensors", use: sensorController.create)
 }

@@ -8,7 +8,7 @@
 import Vapor
 import FluentSQLite
 
-enum SensorType:Int,Codable, ReflectionDecodable, SQLiteType {
+enum SensorType:Int,Codable, ReflectionDecodable {
     static func reflectDecoded() throws -> (SensorType, SensorType) {
         return (.moisture, .humidity)
     }
@@ -19,14 +19,14 @@ enum SensorType:Int,Codable, ReflectionDecodable, SQLiteType {
     case moisture
 }
 
-final class Sensor: SQLiteModel {
+final class Sensor: SQLiteUUIDModel {
     typealias Database = SQLiteDatabase
-    var id: Int?
+    var id: UUID?
     var userID: User.ID
     var roomID: Room.ID
     var type: SensorType
     
-    init(id:Int? = nil, userID:User.ID, roomID:Room.ID, type:SensorType = .moisture) {
+    init(id:UUID? = nil, userID:User.ID, roomID:Room.ID, type:SensorType = .moisture) {
         self.id = id
         self.userID = userID
         self.roomID = roomID

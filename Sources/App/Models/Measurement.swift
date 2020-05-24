@@ -8,15 +8,15 @@
 import Vapor
 import FluentSQLite
 
-final class Measurement: SQLiteModel {
+final class Measurement: SQLiteUUIDModel {
     typealias Database = SQLiteDatabase
     
-    var id: Int?
+    var id: UUID?
     var value: Int
     var sensorID: Sensor.ID
     var userID: User.ID
     
-    init(id:Int? = nil, value:Int, userID:User.ID, sensorID: Sensor.ID){
+    init(id:UUID? = nil, value:Int, userID:User.ID, sensorID: Sensor.ID){
         self.id = id
         self.value = value
         self.sensorID = sensorID

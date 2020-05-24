@@ -32,5 +32,4 @@ final class MeasurementController {
 struct CreateMeasurementRequest: Content {
     var value: Int
     var sensorID: Sensor.ID
-//    var userID: User.ID
 }

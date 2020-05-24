@@ -3,11 +3,11 @@ import FluentSQLite
 import Vapor
 
 /// A registered user, capable of owning todo items.
-final class User: SQLiteModel {
+final class User: SQLiteUUIDModel {
     typealias Database = SQLiteDatabase
     /// User's unique identifier.
     /// Can be `nil` if the user has not been saved yet.
-    var id: Int?
+    var id: UUID?
     
     /// User's full name.
     var name: String
@@ -19,7 +19,7 @@ final class User: SQLiteModel {
     var passwordHash: String
     
     /// Creates a new `User`.
-    init(id: Int? = nil, name: String, email: String, passwordHash: String) {
+    init(id: UUID? = nil, name: String, email: String, passwordHash: String) {
         self.id = id
         self.name = name
         self.email = email

@@ -29,6 +29,7 @@ final class HomeController{
         }
     }
 }
+
 struct CreateHomeRequest: Content {
     var name: String
     var roomCount: Int
