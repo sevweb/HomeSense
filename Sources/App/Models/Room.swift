@@ -20,6 +20,12 @@ final class Room: SQLiteModel {
         self.roomName = roomName
     }
 }
+extension Room {
+    var user: Parent<Room, User> {
+        return parent(\.userID)
+    }
+}
+
 extension Room: Migration {
     static func prepare(on conn: SQLiteConnection) -> Future<Void> {
         return SQLiteDatabase.create(Room.self, on: conn) { builder in

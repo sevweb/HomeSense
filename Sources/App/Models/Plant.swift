@@ -22,12 +22,23 @@ final class Plant: SQLiteModel {
         self.userID = userID
     }
 }
+
+extension Plant {
+    /// Fluent relation to user that owns this todo.
+    var user: Parent<Plant, User> {
+        return parent(\.userID)
+    }
+}
+
 extension Plant: Migration {
     static func prepare(on conn: SQLiteConnection) -> Future<Void> {
         return SQLiteDatabase.create(Plant.self, on: conn) { builder in
             builder.field(for: \.id, isIdentifier: true)
             builder.field(for: \.kind)
+            builder.field(for: \.userID)
+            builder.field(for: \.roomID)
             builder.reference(from: \.userID, to: \User.id)
+            builder.reference(from: \.roomID, to:  \User.id)
         }
     }
 }

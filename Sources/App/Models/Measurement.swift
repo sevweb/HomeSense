@@ -19,12 +19,16 @@ final class Measurement: SQLiteModel {
     init(id:Int? = nil, value:Int, userID:User.ID, sensorID: Sensor.ID){
         self.id = id
         self.value = value
-        self.sensorID = Sensor.ID
+        self.sensorID = sensorID
         self.userID = userID
     }
-    
 }
-
+extension Measurement {
+    /// Fluent relation to user that owns this todo.
+    var user: Parent<Measurement, User> {
+        return parent(\.userID)
+    }
+}
 extension Measurement: Migration {
     static func prepare(on conn: SQLiteConnection) -> Future<Void> {
         return SQLiteDatabase.create(Measurement.self, on: conn) { builder in
@@ -32,6 +36,7 @@ extension Measurement: Migration {
             builder.field(for: \.value)
             builder.field(for: \.userID)
             builder.field(for: \.sensorID)
+            builder.reference(from: \.sensorID, to: \Sensor.id)
             builder.reference(from: \.userID, to: \User.id)
         }
     }

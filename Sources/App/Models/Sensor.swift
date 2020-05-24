@@ -27,6 +27,12 @@ final class Sensor: SQLiteModel {
     }
 }
 
+extension Sensor {
+    var user: Parent<Sensor, User> {
+        return parent(\.userID)
+    }
+}
+
 extension Sensor: Migration {
     static func prepare(on conn: SQLiteConnection) -> Future<Void> {
         return SQLiteDatabase.create(Sensor.self, on: conn) { builder in

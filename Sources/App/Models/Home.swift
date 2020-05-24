@@ -22,7 +22,12 @@ final class Home: SQLiteModel {
         self.userID = userID
     }
 }
-
+extension Home {
+    /// Fluent relation to user that owns this todo.
+    var user: Parent<Home, User> {
+        return parent(\.userID)
+    }
+}
 extension Home: Migration {
     static func prepare(on conn: SQLiteConnection) -> Future<Void> {
         return SQLiteDatabase.create(Home.self, on: conn) { builder in
