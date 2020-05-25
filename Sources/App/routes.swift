@@ -12,10 +12,13 @@ public func routes(_ router: Router) throws {
     
     // basic / password auth protected routes
     let basic = router.grouped(User.basicAuthMiddleware(using: BCryptDigest()))
-    basic.post("login", use: userController.login)
+    basic.post("basicLogin", use: userController.basicLogin)
     
     let authSessionRouter = router.grouped(User.authSessionsMiddleware())
     authSessionRouter.post("login", use: userController.login)
+    
+    let protectedRouter = authSessionRouter.grouped(RedirectMiddleware<User>(path: "/login"))
+    protectedRouter.get("profile", use: userController.renderProfile)
     
     // bearer / token auth protected routes
     let bearer = router.grouped(User.tokenAuthMiddleware())

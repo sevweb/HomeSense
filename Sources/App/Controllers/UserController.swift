@@ -13,7 +13,11 @@ final class UserController {
        return try req.view().render("login")
     }
     
-    func login(_ req: Request) throws -> Future<UserToken> {
+    func renderProfile(_ req: Request) throws -> Future<View> {
+      let user = try req.requireAuthenticated(User.self)
+      return try req.view().render("profile", ["user": user])
+    }
+    func basicLogin(_ req: Request) throws -> Future<UserToken> {
         // get user auth'd by basic auth middleware
         let user = try req.requireAuthenticated(User.self)
         
@@ -28,7 +32,7 @@ final class UserController {
       return try req.content.decode(User.self).flatMap { user in
         return User.authenticate(
           username: user.email,
-          password: user.password,
+          password: user.passwordHash,
           using: BCryptDigest(),
           on: req
         ).map { user in
@@ -40,8 +44,8 @@ final class UserController {
         }
       }
     }
-    /// Creates a new user.
-    func create(_ req: Request) throws -> Future<UserResponse> {
+    /// Creates a new user. //
+    func create(_ req: Request) throws -> Future<Response> {
         // decode request content
         return try req.content.decode(CreateUserRequest.self).flatMap { user -> Future<User> in
             // verify that passwords match
@@ -54,11 +58,11 @@ final class UserController {
             // save new user
             return User(id: nil, name: user.name, email: user.email, passwordHash: hash)
                 .save(on: req)
-        }.map { user in
-            // map to public user response (omits password hash)
-//            _ in
-//                     return req.redirect(to: "/login")
-            return try UserResponse(id: user.requireID(), name: user.name, email: user.email)
+        }.map {  _ in
+                 return req.redirect(to: "/login")
+            
+//            user in
+//            return try UserResponse(id: user.requireID(), name: user.name, email: user.email)
         }
     }
 }
