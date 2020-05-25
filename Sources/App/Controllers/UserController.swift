@@ -6,7 +6,11 @@ import FluentSQLite
 final class UserController {
     /// Logs a user in, returning a token for accessing protected endpoints.
     func renderRegister(_ req: Request) throws -> Future<View> {
-      return try req.view().render("register")
+      return try req.view().render("register",["name": "Leaf"])
+    }
+    
+    func renderLogin(_ req: Request) throws -> Future<View> {
+       return try req.view().render("login")
     }
     
     func login(_ req: Request) throws -> Future<UserToken> {
@@ -36,6 +40,8 @@ final class UserController {
                 .save(on: req)
         }.map { user in
             // map to public user response (omits password hash)
+//            _ in
+//                     return req.redirect(to: "/login")
             return try UserResponse(id: user.requireID(), name: user.name, email: user.email)
         }
     }

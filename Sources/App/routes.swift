@@ -1,5 +1,6 @@
 import Crypto
 import Vapor
+import Authentication
 
 /// Register your application's routes here.
 public func routes(_ router: Router) throws {
@@ -7,10 +8,14 @@ public func routes(_ router: Router) throws {
     let userController = UserController()
     router.post("users", use: userController.create)
     router.get("register", use: userController.renderRegister)
+    router.get("login", use: userController.renderLogin)
     
     // basic / password auth protected routes
     let basic = router.grouped(User.basicAuthMiddleware(using: BCryptDigest()))
     basic.post("login", use: userController.login)
+    
+//    let authSessionRouter = router.grouped(User.authSessionsMiddleware())
+//    authSessionRouter.post("login", use: userController.login)
     
     // bearer / token auth protected routes
     let bearer = router.grouped(User.tokenAuthMiddleware())
