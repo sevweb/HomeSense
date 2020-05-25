@@ -15,12 +15,19 @@ final class Measurement: SQLiteUUIDModel {
     var value: Int
     var sensorID: Sensor.ID
     var userID: User.ID
+    var measureTime: Date
     
     init(id:UUID? = nil, value:Int, userID:User.ID, sensorID: Sensor.ID){
         self.id = id
         self.value = value
         self.sensorID = sensorID
         self.userID = userID
+        self.measureTime = Date()
+    }
+    
+    func willCreate(on conn: SQLiteConnection) throws -> EventLoopFuture<Measurement> {
+        print("Measurement created with id: \(String(describing: id))")
+        return conn.future(self)
     }
 }
 extension Measurement {
@@ -36,6 +43,7 @@ extension Measurement: Migration {
             builder.field(for: \.value)
             builder.field(for: \.userID)
             builder.field(for: \.sensorID)
+            builder.field(for: \.measureTime)
             builder.reference(from: \.sensorID, to: \Sensor.id)
             builder.reference(from: \.userID, to: \User.id)
         }

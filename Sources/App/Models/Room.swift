@@ -22,16 +22,19 @@ final class Room: SQLiteUUIDModel {
         self.homeID = homeID
     }
 }
+
 extension Room {
     var user: Parent<Room, User> {
         return parent(\.userID)
     }
 }
+
 extension Room {
     var home: Parent<Room, Home> {
         return parent(\.homeID)
     }
 }
+
 extension Room: Migration {
     static func prepare(on conn: SQLiteConnection) -> Future<Void> {
         return SQLiteDatabase.create(Room.self, on: conn) { builder in
