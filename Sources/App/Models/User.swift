@@ -59,7 +59,7 @@ extension User: Migration {
         }
     }
 }
-
+extension User: SessionAuthenticatable {}
 /// Allows `User` to be encoded to and decoded from HTTP messages.
 extension User: Content { }
 
