@@ -5,6 +5,10 @@ import FluentSQLite
 /// Creates new users and logs them in.
 final class UserController {
     /// Logs a user in, returning a token for accessing protected endpoints.
+    func renderRegister(_ req: Request) throws -> Future<View> {
+      return try req.view().render("register")
+    }
+    
     func login(_ req: Request) throws -> Future<UserToken> {
         // get user auth'd by basic auth middleware
         let user = try req.requireAuthenticated(User.self)
