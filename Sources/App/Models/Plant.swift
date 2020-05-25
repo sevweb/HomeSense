@@ -8,14 +8,14 @@
 import Vapor
 import FluentSQLite
 
-final class Plant: SQLiteModel {
+final class Plant: SQLiteUUIDModel {
     typealias Database = SQLiteDatabase
-    var id: Int?
+    var id: UUID?
     var kind: String
     var roomID: Room.ID
     var userID: User.ID
     
-    init(id: Int? = nil, kind: String, roomID: Room.ID, userID: User.ID) {
+    init(id: UUID? = nil, kind: String, roomID: Room.ID, userID: User.ID) {
         self.id = id
         self.kind = kind
         self.roomID = roomID

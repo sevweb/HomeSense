@@ -40,7 +40,7 @@ extension Sensor {
     }
 }
 extension Sensor {
-    var room: Parent<Sensor, Room> {
+    var room: Parent<Sensor, Plant> {
         return parent(\.plantID)
     }
 }
